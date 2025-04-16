@@ -1,0 +1,14 @@
+name: a3s 
+pre_window: source env && export PATH=.:$PATH
+windows:
+  - a3s:
+      layout: main-vertical
+      panes:
+        - term:
+            - clear
+        - a3s:
+            - a3s-run
+        - mongo:
+            - mongo-run 
+        - nats:
+            - nats-run

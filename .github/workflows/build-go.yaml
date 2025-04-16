@@ -1,0 +1,45 @@
+name: build-go
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  GO111MODULE: on
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.24"
+    steps:
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+
+      - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4
+        with:
+          go-version: ${{ matrix.go }}
+          check-latest: true
+
+      - name: setup
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+
+      - name: build
+        run: |
+          make
+
+#      - uses: PaloAltoNetworks/cov@3c863a1458c9ae685c4332af25700920818aa0d2 # 3.0.0
+#        with:
+#          main_branch: master
+#          cov_file: unit_coverage.out
+#          cov_threshold: "5"
+#          cov_mode: coverage

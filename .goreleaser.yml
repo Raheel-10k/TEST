@@ -1,0 +1,67 @@
+# usage:
+#   * tag a commit
+#   * push the tag
+#   * call 'make release'
+#
+# for any syntax issues, etc.:
+# https://goreleaser.com/deprecations/
+---
+version: 2
+snapshot:
+  version_template: "{{ .Var.Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^examples:"
+builds:
+  - id: a3s
+    main: ./cmd/a3s
+    binary: a3s
+    goos:
+      - linux
+      - freebsd
+      - darwin
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+
+  - id: a3sctl
+    main: ./cmd/a3sctl
+    binary: a3sctl
+    goos:
+      - linux
+      - freebsd
+      - darwin
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - id: a3s
+    formats:
+      - binary
+    ids:
+      - a3s
+
+  - id: a3sctl
+    formats:
+      - binary
+    ids:
+      - a3sctl
+
+signs:
+  - artifacts: checksum
+    args:
+      [
+        "-u",
+        "047425996F52AAC835C75B3F2CE3F8894D4DA57A",
+        "--output",
+        "${signature}",
+        "--detach-sign",
+        "${artifact}",
+      ]
