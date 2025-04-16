@@ -4,7 +4,8 @@
 2.  2\. Install dependencies: go, tg, rego, bindata, elegen
 3.  3\. Generate development certificates
 4.  4\. Build Docker containers
-5.  5\. Start Docker Compose in 'cd/dev' directory
+5.  5\. Start Docker Compose in 'cd/dev' directory.
+6.  6\. Run make cli command to create a3sctl **custom cli**
 
 **Sample Docker Logs:**
 
